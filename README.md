@@ -1,6 +1,6 @@
 # MarySue Encoder
 
-[![Build Status](https://travis-ci.org/atonasting/marysue-encoder.svg?branch=master)](https://travis-ci.org/atonasting/marysue-encoder)
+![](https://github.com/atonasting/marysue-encoder/workflows/Build/badge.svg)
 
 把任意文字和玛丽苏体的姓名进行加密转换。
 
@@ -8,9 +8,7 @@
 
 原文：
 > 苟利国家生死以
-
 > 岂因祸福避趋之
-
 > ————林则徐
 
 转换后：
@@ -20,7 +18,7 @@
 
 ## Demo
 
-http://marysue.funnyjs.com
+https://funnyjs.com/marysue/
 
 ## Run
 

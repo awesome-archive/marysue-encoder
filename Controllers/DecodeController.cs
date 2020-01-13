@@ -14,6 +14,7 @@ namespace MareSueEncoder.Controllers
     public class DecodeController : Controller
     {
         private ILogger _logger;
+        private const int _decodeMaxLength = 100000;
 
         public DecodeController(ILogger<DecodeController> logger)
         {
@@ -30,18 +31,25 @@ namespace MareSueEncoder.Controllers
             }
 
             var code = param.Code.Trim();
+            if (code.Length > _decodeMaxLength)
+            {
+                _logger.LogError("Decoding param too long: {0}", code.Length);
+                return BadRequest("param too long");
+            }
+
+            var remoteIP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             try
             {
                 var sourceAes = EncodeTool.StringToByteArray(code);
                 var source = AESTool.Decrypt(sourceAes);
                 var sourceStr = Encoding.UTF8.GetString(source);
 
-                _logger.LogInformation("Decoding successfully.\nCode: {0} \nSource:  {1}", code, sourceStr);
+                _logger.LogInformation($"(IP:{remoteIP})Decoding successfully.\nCode: {code} \nSource:  {sourceStr}");
                 return new JsonResult(new DecodeResult() { Source = sourceStr });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _logger.LogError("Decoding error for string:\n {0} \nError: {1}", code, ex.Message);
+                _logger.LogError($"(IP:{remoteIP})Decoding error for string:\n {code} \nError: {ex.Message}");
                 return BadRequest("decode error");
             }
         }
